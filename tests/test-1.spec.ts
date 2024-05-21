@@ -167,6 +167,7 @@ test("Calculate all item cost", async ({ page }) => {
   let expectedPrice = 119.00;
   let costItemsList = "small";
   await page.goto(landingPage);
+  //123
   
  for (const el of await page.locator(costItemsList).all()){
     //get string value from element
