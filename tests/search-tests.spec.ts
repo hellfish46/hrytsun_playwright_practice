@@ -11,6 +11,7 @@ test("Search 'Get started' page", async ({ page }) => {
 
   //Click "Search" element
   await page.getByLabel('Search').click();
+  //00000
 
   //Fill "get started" text
   await page.getByPlaceholder('Search docs').fill('get started');

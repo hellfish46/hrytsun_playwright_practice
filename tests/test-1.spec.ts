@@ -47,6 +47,8 @@ let cafeBreveLocator = "[data-test='Cafe_Breve']";
 
 let costItemsList = "small";
 
+let discountBonusModalLocator = ".promo";
+
 
 let itemCount = 1;
 
@@ -125,6 +127,39 @@ test("Adding 2 item to the card", async ({ page }) => {
   await page.close();
 });
 
+
+test("Give extra Mocha", async ({ page }) => {
+  let discountCost = 4;
+  let discountText = "It's your lucky day! Get an extra cup of Mocha for $" + discountCost + ".";
+
+  await page.goto(landingPage);
+  await page.locator(mochaLocator).click();
+  await page.locator(flatWhiteLocator).click();
+  await page.locator(americanoLocator).click();
+
+  
+  await expect(page.locator(discountBonusModalLocator)).toContainText(discountText);
+  await page.locator(".yes").click();
+
+  await expect(page.locator(checkoutLocator)).toContainText(totalCostToString(mochaCost + flatWhiteCost + americanoCost + discountCost));
+
+  await page.close();
+});
+
+test("Discard extra Mocha", async ({ page }) => {
+  let discardExtraItemButton = page.locator("//div[@class='buttons']/button[not(@class='yes')]");
+
+  await page.goto(landingPage);
+  await page.locator(mochaLocator).click();
+  await page.locator(flatWhiteLocator).click();
+  await page.locator(americanoLocator).click();
+
+  await discardExtraItemButton.click();
+
+  await expect(page.locator(checkoutLocator)).toContainText(totalCostToString(mochaCost + flatWhiteCost + americanoCost));
+
+  await page.close();
+});
 
 test("Remove all items from the card", async ({ page }) => {
   let addOneCappuccino = page.getByRole('button', { name: 'Add one Cappuccino' });
